@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tree and Park Report</title>
+        
+     </head>
+
+    <body>
+        <div class = "top">
+            <div class = "reports" >
+                <div class ="report__title">
+                    <h1>Tree and Park Report - <span class="this__Year">%year%</span></h1>
+                </div>    
+            </div>
+            <div class = "parks__report" >
+                <h2>----PARKS REPORT----</h2>
+                <div class = "park__stats" >
+                    Our <span class="numbParks">%numberOfParks%</span> have an average age of <span  class="argAge">%averageAge%</span>.
+                </div> 
+                <div class = "parks_list">
+                    %nameOfPark% has a tree density of %treesPerSquareKM% trees per square KM.
+                </div>
+            </div>
+            <div class = "streets__report" >    
+                <h2>----STREETS REPORT----</h2>
+                <div class = "street__stats">
+                    Our %numberOfStreets% streets have a total length of %lengthOfStreet% KM.
+                        with an average  of %averageLength%.
+                </div>
+                <div class = Streets__lists>
+                    streetName%, built in %builtInYear%, is a %sizeStreet% street.
+                </div>
+            </div>
+        
+        <script src="script.js"></script>
+        </div>
+    </body>
+</html>
