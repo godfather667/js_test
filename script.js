@@ -89,7 +89,7 @@ var CityController = (function() {
         },
         
          getStreetTotalLength: function() {
-            var totalLength;
+            var totalLength = 0;
             for (var x in Streets.length) {
                 totalLength += Streets.length[x];
             }
@@ -98,8 +98,10 @@ var CityController = (function() {
         }, 
         
         getStreetAverageLength: function() {
-             var averageLength = 0;     
-             return(streetAverageLength = streetTotalLength / Streets.name.length);
+            var averageLength = 0;     
+            averageLength = streetTotalLength / Streets.name.length;
+            console.log(averageLength);
+            return(averageLength);
         }
             
     }
@@ -117,13 +119,13 @@ var UIController = (function() {
         parkName: '.name__Park',
         treePerSqKM: '.trees__squareKM',
         parksContainer: '.parks__container',  
-        streetsContainer: '.street__container',
+        streetsContainer: '.streets__container',
         numberOfStreets: '.numberOfStreets',
-        lengthOfStreet:  '.lengthOfStreet',
-        averageLenStreet:  '.averageLengthOfStreets',
-        streetName: '.streetName',
-        yearBuilt: '.builtInYear',
-        StreetSize: '.sizeOfStreet',
+        lengthOfStreets:  '.lengthOfStreets',
+        averageLengthStreets:  '.averageLengthOfStreets',
+        streetName: '.street__name',
+        yearBuilt: '.built__inyear',
+        StreetSize: '.size__Street',
             
     };
       
@@ -147,17 +149,8 @@ var UIController = (function() {
           },
         
             
-         displayParkNames: function(){
-            namesOfParks =  CityController.getNamesOfParks();
-            console.log("Names of Parks: " + namesOfParks);
-            for (var x in namesOfParks) {
-                console.log(namesOfParks[x]);
-            } 
-        },
-        
         addParkItems: function() {
         element = DOMStrings.parksContainer;
-        console.log(element);
         namesOfParks =  CityController.getNamesOfParks();
         numberOfTrees = CityController.getNumberOfTrees();
         parkAreas = CityController.getParkArea();
@@ -171,16 +164,41 @@ var UIController = (function() {
             html = "<div><span class='name__park'>%nameOfPark%</span> has a tree density of <span class='trees__squareKM'>%trees__squareKM%</span> trees per square KM.</div>"
             newHtml = html.replace('%nameOfPark%', parkName);
             newHtml = newHtml.replace('%trees__squareKM%', parkSqKM);
-            console.log('newHtml = ' + newHtml);
-
             element = DOMStrings.parksContainer;
-            console.log(element);
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
            }
         },
         
+        displayStreetSummary: function() {
+            var parkTotalAge, numberOfParks, averageAge;
+            numberOfStreets =  CityController.getNumberOfSteets();
+            streetTotalLength = CityController.getStreetTotalLength();
+            averageLength = streetTotalLength / numberOfStreets;
+            document.querySelector(DOMStrings.numberOfStreets).textContent = numberOfStreets;
+            document.querySelector(DOMStrings.lengthOfStreets).textContent = streetTotalLength;
+            document.querySelector(DOMStrings.averageLengthStreets).textContent = averageLength;        
+        },
+  
+        addStreetItems: function() {
+        element = DOMStrings.streetsContainer;
+        namesOfStreets = CityController.getNamesOfStreets();
+        yearsStreetBuilt = CityController.getStreetYearsBuilt();
+        sizeOfStreets = CityController.getSizeOfStreets();
+        for (var x in namesOfStreets) {
+            var html, newHtml, parkName, numbTrees, parkArea, parkSqKM;
+            streetName = namesOfStreets[x];
+            yearBuilt = yearsStreetBuilt[x];
+            streetSizes = sizeOfStreets[x];
+            html = "<div><span class='street__name'>%nameOfStreet%</span> was built in <span class='built__inyear'>%builtInYear%</span> is a <span 'size__street'>%streetSize% street</div>"
+            newHtml = html.replace('%nameOfStreet%', streetName);
+            newHtml = newHtml.replace('%builtInYear%', yearBuilt);
+            newHtml = newHtml.replace('%streetSize%', streetSizes);
+            element = DOMStrings.streetsContainer;
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+           }
+        },
         
-        
+      
         getDOMStrings: function() {
            return DOMStrings;
        }   
@@ -197,16 +215,11 @@ var Controller = (function() {
 return {
     init: function() {
         console.log('Application has started.');
-        // UIController.displayMonth();
         UIController.displayMonth();
         UIController.displayParkAge();
-        UIController.displayParkNames();
         UIController.addParkItems();
-//  	UIController.displayStreetSummary();
-        
-//       DOM = UIController.getDOMStrings();
-//      setupEventListeners(); 
-
+        UIController.displayStreetSummary();
+        UIController.addStreetItems();
     }
 };
     
