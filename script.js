@@ -25,11 +25,16 @@ var CityController = (function() {
       streetTotalLen: 0,
       streetAvgLen: 0
   };     
+
+  let streetTotalLength = 0;
       
-    // Private Functions
-    
-    // Return Public Functions
+  //
+  // Return Public Functions
+  //
     return {
+        //
+        // Park Functions
+        //
         getNamesOfParks: function() {            
              return(Parks.name);
         },
@@ -58,7 +63,45 @@ var CityController = (function() {
                 totalParkAge += (year - Parks.yearBuilt[i]);
             }
             return(totalParkAge)
+        },
+        
+        //  
+        // Street Functions
+        //
+         getNamesOfStreets: function() {            
+             return(Streets.name);
+        },
+        
+        getNumberOfSteets: function() {
+            return(Streets.name.length);
+        },
+        
+        getSizeOfStreets: function() {
+            return(Streets.size);
+        },        
+        
+        getLengthOfStreets: function() {
+            return(Streets.length);
+        },
+        
+        getStreetYearsBuilt: function() {
+            return(Streets.yearBuilt);    
+        },
+        
+         getStreetTotalLength: function() {
+            var totalLength;
+            for (var x in Streets.length) {
+                totalLength += Streets.length[x];
+            }
+            streetTotalLength = totalLength;
+            return(totalLength);
+        }, 
+        
+        getStreetAverageLength: function() {
+             var averageLength = 0;     
+             return(streetAverageLength = streetTotalLength / Streets.name.length);
         }
+            
     }
     
 })();  
@@ -73,7 +116,8 @@ var UIController = (function() {
         avgAge: '.average__age',
         parkName: '.name__Park',
         treePerSqKM: '.trees__squareKM',
-        parksContainer: 'parks__container',        
+        parksContainer: '.parks__container',  
+        streetsContainer: '.street__container',
         numberOfStreets: '.numberOfStreets',
         lengthOfStreet:  '.lengthOfStreet',
         averageLenStreet:  '.averageLengthOfStreets',
@@ -87,8 +131,9 @@ var UIController = (function() {
         displayMonth: function() {
            var now, months, month, year;
            now = new Date();   // Returns todays Date.
-           months = ['January', 'February', 'March',                       'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+           months = ['January', 'February', 'March','April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
            month = now.getMonth();
+	   year = now.getFullYear();
            document.querySelector(DOMStrings.thisYear).textContent = months[month] + ' ' + year;
         },
         
@@ -118,20 +163,19 @@ var UIController = (function() {
         parkAreas = CityController.getParkArea();
         yearsBuilt = CityController.getYearsBuilt();
         for (var x in namesOfParks) {
-            var html, newHtml,parkName, numbTrees, parkArea;
+            var html, newHtml, parkName, numbTrees, parkArea, parkSqKM;
             parkName = namesOfParks[x];
             numbTrees = numberOfTrees[x];
             parkArea = parkAreas[x];
             parkSqKM = numbTrees/parkArea
-            console.log('n t a k = ' + parkName + numbTrees + parkArea + parkSqKM);
             html = "<div><span class='name__park'>%nameOfPark%</span> has a tree density of <span class='trees__squareKM'>%trees__squareKM%</span> trees per square KM.</div>"
             newHtml = html.replace('%nameOfPark%', parkName);
             newHtml = newHtml.replace('%trees__squareKM%', parkSqKM);
             console.log('newHtml = ' + newHtml);
 
-           var element = document.getElementById(DOMStrings.parksContainer);
-           console.log(element);
-           document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+            element = DOMStrings.parksContainer;
+            console.log(element);
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
            }
         },
         
@@ -158,6 +202,7 @@ return {
         UIController.displayParkAge();
         UIController.displayParkNames();
         UIController.addParkItems();
+//  	UIController.displayStreetSummary();
         
 //       DOM = UIController.getDOMStrings();
 //      setupEventListeners(); 
